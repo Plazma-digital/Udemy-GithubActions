@@ -3,9 +3,18 @@ on:
     workflow_dispatch:
         inputs:
             use-cache:
-                type: boolean
-                description: "Whether to execute cache step"
-                default: true
+              type: boolean
+              description: "Whether to execute cache step"
+              default: true
+            node-version:
+              type: choice
+              description: "Node.js version to use"
+              options:
+                - "22.x"
+                - "21.x"
+                - "23.x"
+                - "24.x"
+              default: "24.x"
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -18,7 +27,7 @@ jobs:
             - name: "Setup Node"
               uses: actions/setup-node@v4
               with:
-                node-version: '24.x'
+                node-version: ${{ inputs.node-version }}
             - name: "Install dependencies"
               run: npm ci
             - name: "Testing"
